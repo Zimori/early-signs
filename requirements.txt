@@ -1,0 +1,23 @@
+pandas >= 2.3.0
+numpy >= 2.2.6
+
+scikit-learn
+xgboost
+#tensorflow
+#torch
+
+fredapi
+requests
+
+jupyterlab
+ipykernel
+
+plotly
+matplotlib
+seaborn
+
+scipy
+statsmodels
+
+python-dotenv
+tqdm
