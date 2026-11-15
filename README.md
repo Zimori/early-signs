@@ -28,7 +28,7 @@ For a quarter $t$ and a horizon $h \in \{1, 4\}$ quarters, the target is the ave
 
 $$y_{t+h} = \frac{400}{h} \left( \ln \mathrm{GDP}_{t+h} - \ln \mathrm{GDP}_t \right)$$
 
-We forecast the 5%, 25%, 50%, 75% and 95% quantiles of $y_{t+h}$. The note's second horizon, twenty quarters, is left out of the out-of-sample work: with a sample starting in 1993, five-year targets overlap so much that only a few independent observations would remain.
+We forecast the 5%, 25%, 50%, 75% and 95% quantiles of $y_{t+h}$. The note's second horizon, twenty quarters, is left out of the out-of-sample work: with a sample starting in 1993, five-year targets overlap so much that only a few independent observations would remain. It is still replicated in-sample.
 
 ### Predictors
 
@@ -71,14 +71,17 @@ Forecasts are produced with an expanding walk-forward window: train on everythin
 
 | Source | What | Access |
 |---|---|---|
-| INSEE | Quarterly national accounts, business surveys | `pynsee`, DBnomics |
-| Banque de France | Credit and debt, interest rates, business surveys | Webstat, DBnomics |
-| ECB | CISS financial stress indicator | ECB Data Portal |
-| CBOE | VIX | public download |
+| INSEE | Real GDP | insee.fr API |
+| BIS | Debt-to-GDP (households, firms), credit gap, house prices | BIS API |
+| OECD | House prices, price-to-rent, share prices, interest rates, GDP vintages since 1999 | OECD API |
+| ECB | CISS financial stress indicator | ECB API |
+| FRED | VIX, commodity prices, Brent oil, credit vintages since 2016 (ALFRED) | fred.stlouisfed.org |
+| STOXX | VSTOXX | stoxx.com |
 | Baker, Bloom and Davis; Caldara and Iacoviello | Policy uncertainty and geopolitical risk indices | policyuncertainty.com, matteoiacoviello.com |
-| OECD | Real-time vintages since 1999 | OECD Data Explorer |
 | Dallas Fed | Real-time OECD vintages, 1962 to 1998 | dallasfed.org |
 | AFSE (CDCEF) | Reference dates of French recessions | Committee press releases and Aviat et al. (2023) |
+
+The exact series and their start dates are in [docs/data-map.md](docs/data-map.md). `src/fetch_raw.py` downloads everything into `data/raw/`, with the date in each file name.
 
 ## How the project changed
 
