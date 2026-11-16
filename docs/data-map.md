@@ -58,7 +58,7 @@ So for GDP (the target, and the GDP growth predictors) I can use the data as it 
 
 ## Gaps and decisions to make
 
-1. **Financial conditions index (ICF factors 1 and 2).** Not public for France. I could rebuild it with the Lombardi et al. two-factor method from public rates, spreads, equity, volatility and exchange rates, use the CISS alone instead, or drop it. It only shows up at 20 quarters, which I only replicate in-sample anyway.
+1. **Financial conditions index (ICF factors 1 and 2).** Not public for France. Decided (16 Nov): I use the CISS alone in its place, since it's already one of the note's predictors and is public. It only shows up at 20 quarters, which I only replicate in-sample anyway, so the replication will differ there and I'll say so. Rebuilding it with the Lombardi et al. two-factor method stays possible later.
 2. **VSTOXX starts in 1999**, but the sample starts in 1993. It's only in Chart 1 at 20 quarters and the LASSO doesn't keep it, so either use it from 1999 or leave it out.
 3. **The nine unnamed variables.** I use the categories from the text (rates, activity) and say clearly that this part is my choice.
 4. **Debt vintages.** See above: revised debt / real-time GDP before 2016, real vintages after.
