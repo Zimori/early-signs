@@ -2,7 +2,7 @@
 
 ## Research questions
 
-1. Can the one-quarter results of Banque de France Eco Notepad 468 be reproduced in-sample from public data?
+1. Can the results of Banque de France Eco Notepad 468, at 1 and 20 quarters, be reproduced in-sample from public data?
 2. Do the predictors the note ranks first (household and corporate debt, the VIX) still lead when the 5% quantile is forecast out of sample, walk-forward?
 3. How much do the forecasts and the ranking change when real-time vintages replace today's revised data?
 4. Are the 5% quantile forecasts calibrated? Out of sample, is growth below the forecast about 5% of the time, and are the breaches spread out rather than bunched together?
@@ -20,7 +20,7 @@
 
 ## Out of scope for now
 
-- The note's five-year horizon out of sample (too few independent observations since 1993). It can still be replicated in-sample.
+- The note's five-year horizon out of sample (too few independent observations since 1993). It is replicated in-sample only.
 - Text features from central-bank communication. They can be added later as a predictor.
 - Other countries. A euro-area panel is a possible extension.
 - Monthly forecasts.

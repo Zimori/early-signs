@@ -10,7 +10,7 @@ In October 2026 the Banque de France published Eco Notepad 468, *How can we anti
 
 The note fits its models on the full sample since 1993, using today's revised data. That is the usual way to describe which indicators matter, and it is also exactly what the Early Signs pipeline was built to test. So the project now takes the note's question and runs it through that pipeline:
 
-1. Replicate the note's one-quarter results in-sample, as a check that the data and code match.
+1. Replicate the note's results in-sample at both horizons (1 and 20 quarters), as a check that the data and code match.
 2. Produce the same forecasts out of sample, walk-forward, so that each forecast only uses data from before its date.
 3. Redo it with real-time data vintages instead of revised data.
 4. Backtest the 5% quantile forecasts the way banks backtest Value-at-Risk.
