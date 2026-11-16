@@ -2,8 +2,6 @@
 
 Do the warning signs of a sharp slowdown in French growth hold up when you only use what was known at the time?
 
-> Status: design stage. Nothing below is implemented yet. The plan and its order are in [docs/roadmap.md](docs/roadmap.md).
-
 ## Where the project stands
 
 Early Signs began as a pipeline for testing economic early-warning signals without cheating: forecasts made walk-forward, with overlapping targets purged, on data as it was published at the time. The first target was a yes/no recession label, which turned out to be too rare in France to evaluate (five recessions since 1970, see [docs/history.md](docs/history.md)).
