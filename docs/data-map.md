@@ -62,7 +62,7 @@ So for GDP (the target, and the GDP growth predictors) I can use the data as it 
 2. **VSTOXX starts in 1999**, but the sample starts in 1993. It's only in Chart 1 at 20 quarters and the LASSO doesn't keep it, so either use it from 1999 or leave it out.
 3. **The nine unnamed variables.** I use the categories from the text (rates, activity) and say clearly that this part is my choice.
 4. **Debt vintages.** See above: revised debt / real-time GDP before 2016, real vintages after.
-5. **Publication lags.** I'll measure these in step 2 instead of guessing. INSEE's first GDP estimate comes about 30 days after the quarter (45 days before 2016). BIS release dates can be read from the ALFRED vintage dates. Market data is available the same day.
+5. **Publication lags.** I'll measure these in step 2 instead of guessing. INSEE's first GDP estimate comes about 30 days after the quarter (45 days before 2016). BIS release dates can be read from the ALFRED vintage dates. Market data is available the same day. Measured in step 2, in whole quarters, in [`publication_lags.csv`](../data/reference/publication_lags.csv): GDP, monthly indices and IMF prices 1 quarter, BIS credit and house prices 2, market data 0. BIS: 2026Q1 credit first appeared in ALFRED on 14 September 2026. The rest comes from what was in the 15 November snapshot, so a lag can be one quarter too long but not too short (the build checks it).
 
 ## Recession dates
 

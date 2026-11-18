@@ -6,7 +6,7 @@ Only the first steps are planned in detail. Each one starts when the step before
 
 - [x] Map each predictor in Banque de France Eco Notepad 468 to a public series: debt-to-GDP for households and firms, credit gap, VIX, CISS, financial conditions index, policy uncertainty, geopolitical risk, house and commodity prices, equity returns.
 - [x] Record each series' source and start date ([data-map.md](data-map.md)).
-- [ ] Measure each series' publication delay (can finish during step 2).
+- [x] Measure each series' publication delay (can finish during step 2). Done in whole quarters from the 15 Nov snapshot: [publication_lags.csv](../data/reference/publication_lags.csv).
 - [x] Check which revised series (GDP, debt, credit) have real-time vintages in the OECD revisions database and the Dallas Fed dataset.
 - [x] Encode the CDCEF recession dates with their source. Covid trough still to check.
 - [x] Decide what to do with predictors that have no public source: replace, approximate, or drop and say so ([data-map.md](data-map.md), gaps and decisions).
@@ -15,9 +15,9 @@ Exit: a table of series with source, start date, vintage status and publication 
 
 ## 2. Data pipeline
 
-- [ ] Download scripts with a manifest (URL, date, checksum) for every raw file.
+- [x] Download scripts with a manifest (URL, date, checksum) for every raw file (`data/raw/manifest_<date>.csv`).
 - [x] Build the quarterly dataset on revised data first (`src/build_dataset.py`, levels only for now).
-- [ ] Data checks: no gaps, no future dates, publication lags applied.
+- [x] Data checks: no gaps, no future dates, publication lags applied (asserts in `src/build_dataset.py`).
 - [ ] Replace the version-1 `requirements.txt` with the real dependencies and a lock file.
 
 Exit: one command rebuilds the dataset from raw downloads.

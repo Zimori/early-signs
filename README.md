@@ -78,7 +78,7 @@ Forecasts are produced with an expanding walk-forward window: train on everythin
 | Dallas Fed | Real-time OECD vintages, 1962 to 1998 | dallasfed.org |
 | AFSE (CDCEF) | Reference dates of French recessions | Committee press releases and Aviat et al. (2023) |
 
-The exact series and their start dates are in [docs/data-map.md](docs/data-map.md). `src/fetch_raw.py` downloads everything into `data/raw/`, with the date in each file name.
+The exact series and their start dates are in [docs/data-map.md](docs/data-map.md). `src/fetch_raw.py` downloads everything into `data/raw/`, with the date in each file name and a manifest of URLs and checksums. `src/build_dataset.py` then rebuilds the quarterly table from those files, once as is and once with each series lagged by its publication delay.
 
 ## How the project changed
 
