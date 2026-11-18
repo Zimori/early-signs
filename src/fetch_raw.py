@@ -1,8 +1,13 @@
 # Downloads the raw data for every series in docs/source-checks.md into data/raw/.
 # Files are saved as they come, with today's date in the name, and never edited after.
+# Also writes data/raw/manifest_<date>.csv with the url and a sha256 checksum of each file.
 # Run from the repo root: python src/fetch_raw.py
+# python src/fetch_raw.py 2026-11-15 only rewrites the manifest of that old snapshot, no downloads
 
+import csv
+import hashlib
 import os
+import sys
 from datetime import date
 
 import requests
@@ -57,7 +62,12 @@ sources = {
 
 os.makedirs("data/raw", exist_ok=True)
 today = str(date.today())
+download = True
+if len(sys.argv) > 1:
+    today = sys.argv[1]
+    download = False  # never save new data under an old date
 errors = []
+manifest = [["file", "url", "sha256"]]
 
 for name, url in sources.items():
     # bis_credit_gap.csv -> data/raw/bis_credit_gap_2026-11-15.csv
@@ -66,20 +76,32 @@ for name, url in sources.items():
 
     if os.path.exists(path):
         print("already have", path)
-        continue
-
-    # note: don't set a browser user agent, FRED blocks it
-    try:
-        r = requests.get(url, timeout=120)
-        r.raise_for_status()
-    except Exception as e:
-        print("FAILED", name, e)
+    elif not download:
+        print("MISSING", path)
         errors.append(name)
         continue
+    else:
+        # note: don't set a browser user agent, FRED blocks it
+        try:
+            r = requests.get(url, timeout=120)
+            r.raise_for_status()
+        except Exception as e:
+            print("FAILED", name, e)
+            errors.append(name)
+            continue
 
-    with open(path, "wb") as f:
-        f.write(r.content)
-    print("saved", path)
+        with open(path, "wb") as f:
+            f.write(r.content)
+        print("saved", path)
+
+    with open(path, "rb") as f:
+        checksum = hashlib.sha256(f.read()).hexdigest()
+    manifest.append([os.path.basename(path), url, checksum])
+
+# csv module because some OECD urls have commas in them
+with open(f"data/raw/manifest_{today}.csv", "w", newline="") as f:
+    csv.writer(f).writerows(manifest)
+print("wrote", f"data/raw/manifest_{today}.csv")
 
 if errors:
     print("\nsome downloads failed:", errors)
