@@ -9,14 +9,14 @@ Only the first steps are planned in detail. Each one starts when the step before
 - [ ] Measure each series' publication delay (can finish during step 2).
 - [x] Check which revised series (GDP, debt, credit) have real-time vintages in the OECD revisions database and the Dallas Fed dataset.
 - [x] Encode the CDCEF recession dates with their source. Covid trough still to check.
-- [ ] Decide what to do with predictors that have no public source: replace, approximate, or drop and say so.
+- [x] Decide what to do with predictors that have no public source: replace, approximate, or drop and say so ([data-map.md](data-map.md), gaps and decisions).
 
 Exit: a table of series with source, start date, vintage status and publication lag. If too many key predictors are missing, the plan gets revised here, before any code.
 
 ## 2. Data pipeline
 
 - [ ] Download scripts with a manifest (URL, date, checksum) for every raw file.
-- [ ] Build the quarterly dataset on revised data first.
+- [x] Build the quarterly dataset on revised data first (`src/build_dataset.py`, levels only for now).
 - [ ] Data checks: no gaps, no future dates, publication lags applied.
 - [ ] Replace the version-1 `requirements.txt` with the real dependencies and a lock file.
 

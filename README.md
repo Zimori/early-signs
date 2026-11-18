@@ -33,8 +33,7 @@ We forecast the 5%, 25%, 50%, 75% and 95% quantiles of $y_{t+h}$. The note's sec
 The starting list follows the note, so that results can be compared:
 
 - household and corporate debt as a share of GDP, and credit growth;
-- market uncertainty (VIX) and financial stress (the ECB's CISS);
-- a financial conditions index;
+- market uncertainty (VIX) and financial stress (the ECB's CISS, which also stands in for the note's financial conditions index, not public for France);
 - economic policy uncertainty (Baker, Bloom and Davis, 2016) and geopolitical risk (Caldara and Iacoviello, 2022);
 - house prices, commodity prices and equity returns;
 - current GDP growth.

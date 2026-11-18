@@ -41,7 +41,7 @@
 - Small sample: about 130 quarters since 1993 is little for a tree model, and the out-of-sample period is shorter still. The evaluation has to be honest about uncertainty.
 - Vintage coverage: real-time data may not exist for every predictor. Each series will be labelled as real-time, lagged by its publication delay, or revised.
 - Structural change: the euro (1999), the 2008 crisis and Covid all changed how the economy behaves. Results will be reported by sub-period as well as in total.
-- Quantile crossing: separately estimated quantiles can cross (a 5% forecast above the 25% one). They will be sorted after estimation, which is the standard fix.
+- Quantile crossing: separately estimated quantiles can cross (a 5% forecast above the 25% one).
 
 ## Questions from version 1
 
