@@ -47,7 +47,6 @@ fred = {
     "commodities": "fred_commodities",
     "brent": "fred_brent_monthly",
 }
-# TODO: EPU (xlsx) and GPR (xls), need openpyxl and xlrd
 
 columns = {}
 
@@ -80,6 +79,22 @@ df = pd.read_csv(newest_file("vstoxx"), sep=";")
 df["Date"] = pd.to_datetime(df["Date"], format="%d.%m.%Y")
 df["quarter"] = df["Date"].dt.to_period("Q")
 columns["vstoxx"] = df.groupby("quarter")["Indexvalue"].mean()
+
+# economic policy uncertainty (Baker, Bloom and Davis), monthly, France column
+# calamine reads both xlsx and xls, so one package for EPU and GPR
+df = pd.read_excel(newest_file("epu"), engine="calamine")
+df = df.dropna(subset=["Month"])  # last row is a "Source: ..." note, not data
+# year and month are in two columns, glue them into a date like "1987-1"
+df["date"] = pd.to_datetime(df["Year"] + "-" + df["Month"].astype(int).astype(str), format="%Y-%m")
+df["quarter"] = df["date"].dt.to_period("Q")
+columns["epu_france"] = df.groupby("quarter")["France_News_Index"].mean()
+
+# geopolitical risk (Caldara and Iacoviello), monthly, global index and France
+# the sheet has rows from 1900 (historical indices), but these two start in 1985
+df = pd.read_excel(newest_file("gpr"), engine="calamine", usecols=["month", "GPR", "GPRC_FRA"])
+df["quarter"] = df["month"].dt.to_period("Q")
+columns["gpr"] = df.groupby("quarter")["GPR"].mean().dropna()
+columns["gpr_france"] = df.groupby("quarter")["GPRC_FRA"].mean().dropna()
 
 data = pd.DataFrame(columns).sort_index()
 
