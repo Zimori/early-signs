@@ -108,6 +108,8 @@ data.index.name = "quarter"
 file_name = os.path.basename(newest_file("insee_gdp"))
 download_date = file_name.replace("insee_gdp_", "").replace(".xml", "")
 current_quarter = pd.Period(download_date, freq="Q")
+# a value dated after the download can't be real, it means a broken file or a wrong date parse
+assert data.index[-1] <= current_quarter, f"values dated {data.index[-1]}, after the download date {download_date}"
 data = data[data.index < current_quarter]
 
 # checks
@@ -119,8 +121,24 @@ for col in data.columns:
     missing = data.loc[first:last, col].isna().sum()
     assert missing == 0, f"{col} has {missing} empty quarters"
 
+# publication lags: value of quarter t can only be used from row t + lag
+lags = pd.read_csv("data/reference/publication_lags.csv", index_col="column")["lag_quarters"]
+assert set(lags.index) == set(data.columns), "publication_lags.csv must list every column"
+for col in data.columns:
+    # if the lag is right, the value for (last full quarter - lag) was out at the end
+    # of the last full quarter, so it must already be in the raw file. Too small a lag fails here
+    needed = current_quarter - 1 - lags[col]
+    last = data[col].last_valid_index()
+    assert last >= needed, f"{col}: lag {lags[col]} says {needed} should be out, but the data stops at {last}"
+
+# row t = what was known on the last day of quarter t (still revised values)
+lagged = data.copy()
+for col in data.columns:
+    lagged[col] = data[col].shift(lags[col])
+
 os.makedirs("data/processed", exist_ok=True)
 data.to_csv("data/processed/quarterly_revised.csv")
+lagged.to_csv("data/processed/quarterly_revised_lagged.csv")
 print("values since 1993Q1:")
 print(data.loc["1993Q1":].count().to_string())
-print(f"saved data/processed/quarterly_revised.csv, {data.index[0]} to {data.index[-1]}")
+print(f"saved data/processed/quarterly_revised.csv and quarterly_revised_lagged.csv, {data.index[0]} to {data.index[-1]}")

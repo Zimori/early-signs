@@ -1,0 +1,22 @@
+column,lag_quarters,why
+gdp,1,INSEE first estimate about 30 days after the quarter (45 before 2016); 2026Q3 was out on 15 Nov 2026
+credit_private_gdp,2,BIS: 2026Q1 first appeared in ALFRED on 14 Sep 2026; Q2 still missing on 15 Nov 2026
+credit_households_gdp,2,same BIS release as credit_private_gdp
+credit_corporates_gdp,2,same BIS release as credit_private_gdp
+credit_gap,2,BIS: last value 2026Q1 on 15 Nov 2026 like total credit
+house_prices_bis,2,BIS: last value 2026Q2 on 15 Nov 2026
+house_prices,2,OECD: last value 2026Q2 on 15 Nov 2026
+price_to_rent,2,OECD: last value 2026Q2 on 15 Nov 2026
+shares_france,0,market prices known on the day
+shares_euro_area,0,market prices known on the day
+shares_us,0,market prices known on the day
+rate_3m,0,market rates known on the day
+rate_10y,0,market rates known on the day
+vix,0,market data known on the day
+commodities,1,IMF monthly index via FRED: last value Sep 2026 on 15 Nov 2026
+brent,1,IMF monthly price via FRED: last value Sep 2026 on 15 Nov 2026
+ciss,0,ECB daily: last value 12 Nov 2026 on 15 Nov 2026
+vstoxx,0,market data known on the day
+epu_france,1,monthly: Oct 2026 out on 15 Nov 2026 so a month is out within weeks but not by the end of the quarter
+gpr,1,monthly: Oct 2026 out on 15 Nov 2026 so a month is out within weeks but not by the end of the quarter
+gpr_france,1,monthly: Oct 2026 out on 15 Nov 2026 so a month is out within weeks but not by the end of the quarter
