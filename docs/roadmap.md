@@ -18,7 +18,7 @@ Exit: a table of series with source, start date, vintage status and publication 
 - [x] Download scripts with a manifest (URL, date, checksum) for every raw file (`data/raw/manifest_<date>.csv`).
 - [x] Build the quarterly dataset on revised data first (`src/build_dataset.py`, levels only for now).
 - [x] Data checks: no gaps, no future dates, publication lags applied (asserts in `src/build_dataset.py`).
-- [ ] Replace the version-1 `requirements.txt` with the real dependencies and a lock file.
+- [x] Replace the version-1 `requirements.txt` with the real dependencies and a lock file (`requirements-lock.txt`).
 
 Exit: one command rebuilds the dataset from raw downloads.
 

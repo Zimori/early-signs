@@ -1,0 +1,17 @@
+# Generated, don't edit by hand. Exact versions of every package, including the ones
+# pandas and requests pull in. Install with: pip install -r requirements-lock.txt
+# To rebuild after changing requirements.txt (Python 3.14):
+#   python -m venv /tmp/lockenv
+#   /tmp/lockenv/bin/pip install -r requirements.txt
+#   /tmp/lockenv/bin/pip freeze > requirements-lock.txt
+#   then put these comment lines back at the top
+certifi==2026.10.23
+charset-normalizer==3.5.2
+idna==3.20
+numpy==2.5.5
+pandas==3.0.3
+python-calamine==0.9.1
+python-dateutil==4.0.0
+requests==2.34.2
+tzdata==2026.6
+urllib3==2.8.0
