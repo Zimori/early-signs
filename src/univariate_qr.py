@@ -1,7 +1,7 @@
 # Step 3, first part: one 5% quantile regression per predictor, 1 quarter ahead,
 # on revised data, ranked by pinball loss against a model with no predictor.
-# Target = year-on-year GDP growth one quarter ahead. The note only says "annual
-# growth rate"; this target gives debt coefficients close to the ones it reports.
+# Two targets, one CSV each: q-on-q GDP growth one quarter ahead (the project's
+# target) and year-on-year growth (only to compare with the note, see README).
 # Transforms follow the note's charts (see docs/data-map.md).
 # Run from the repo root: python src/univariate_qr.py
 
@@ -49,44 +49,50 @@ predictors = {
 }
 # left out: vstoxx starts in 1999 and is only in the note at 20 quarters
 
-# target dated t = year-on-year GDP growth in t+1, predictors dated t
-table = pd.DataFrame(predictors)
-table["target"] = annual_growth("gdp").shift(-1)
-table = table.loc[FIRST:LAST]
-table = table[table.index <= pd.Period(LAST, freq="Q") - 1]  # target must be inside the sample
-assert table.notna().all().all(), table.columns[table.isna().any()].tolist()
-y = table["target"]
-
 
 def pinball(y, fitted):
     error = y - fitted
     return (error * (QUANTILE - (error < 0))).mean()
 
 
-baseline = sm.QuantReg(y, pd.Series(1.0, index=y.index)).fit(q=QUANTILE)
-baseline_loss = pinball(y, baseline.fittedvalues)
+# target dated t = GDP growth in t+1, predictors dated t
+targets = {
+    "qoq": gdp_growth.shift(-1),
+    "yoy": annual_growth("gdp").shift(-1),
+}
 
-rows = []
-for name in predictors:
-    x = sm.add_constant(table[name])
-    fit = sm.QuantReg(y, x).fit(q=QUANTILE)
-    loss = pinball(y, fit.fittedvalues)
-    # the baseline is nested in every model, so in-sample it can't do better
-    assert loss <= baseline_loss + 1e-9, name
-    rows.append({
-        "predictor": name,
-        "coef": fit.params[name],
-        "p_value": fit.pvalues[name],
-        "pinball": loss,
-        "gain_vs_baseline_%": 100 * (1 - loss / baseline_loss),
-        # the target shares 3 of its 4 quarters with this predictor, so it wins by construction
-        "mechanical": name == "gdp_growth_annual",
-    })
+for target_name, target in targets.items():
+    table = pd.DataFrame(predictors)
+    table["target"] = target
+    table = table.loc[FIRST:LAST]
+    table = table[table.index <= pd.Period(LAST, freq="Q") - 1]  # target must be inside the sample
+    assert table.notna().all().all(), table.columns[table.isna().any()].tolist()
+    y = table["target"]
 
-results = pd.DataFrame(rows).sort_values("pinball").reset_index(drop=True)
-results.index += 1
+    baseline = sm.QuantReg(y, pd.Series(1.0, index=y.index)).fit(q=QUANTILE)
+    baseline_loss = pinball(y, baseline.fittedvalues)
 
-print(f"sample: {y.index[0]} to {y.index[-1]} ({len(y)} quarters), quantile {QUANTILE}, h=1")
-print(f"baseline (no predictor): 5% quantile {baseline.params.iloc[0]:.2f} pp, pinball {baseline_loss:.4f}")
-print(results.round(4).to_string())
-results.to_csv("report/univariate_qr_h1.csv", index_label="rank")
+    rows = []
+    for name in predictors:
+        x = sm.add_constant(table[name])
+        fit = sm.QuantReg(y, x).fit(q=QUANTILE)
+        loss = pinball(y, fit.fittedvalues)
+        # the baseline is nested in every model, so in-sample it can't do better
+        assert loss <= baseline_loss + 1e-9, name
+        rows.append({
+            "predictor": name,
+            "coef": fit.params[name],
+            "p_value": fit.pvalues[name],
+            "pinball": loss,
+            "gain_vs_baseline_%": 100 * (1 - loss / baseline_loss),
+            # y/y target shares 3 of its 4 quarters with this predictor, so it wins by construction
+            "mechanical": target_name == "yoy" and name == "gdp_growth_annual",
+        })
+
+    results = pd.DataFrame(rows).sort_values("pinball").reset_index(drop=True)
+    results.index += 1
+
+    print(f"\ntarget {target_name}, sample: {y.index[0]} to {y.index[-1]} ({len(y)} quarters), quantile {QUANTILE}, h=1")
+    print(f"baseline (no predictor): 5% quantile {baseline.params.iloc[0]:.2f} pp, pinball {baseline_loss:.4f}")
+    print(results.round(4).to_string())
+    results.to_csv(f"report/univariate_qr_h1_{target_name}.csv", index_label="rank")
