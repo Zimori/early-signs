@@ -1,5 +1,7 @@
 # Step 3, first part: one 5% quantile regression per predictor, 1 quarter ahead,
 # on revised data, ranked by pinball loss against a model with no predictor.
+# Target = year-on-year GDP growth one quarter ahead. The note only says "annual
+# growth rate"; this target gives debt coefficients close to the ones it reports.
 # Transforms follow the note's charts (see docs/data-map.md).
 # Run from the repo root: python src/univariate_qr.py
 
@@ -47,9 +49,9 @@ predictors = {
 }
 # left out: vstoxx starts in 1999 and is only in the note at 20 quarters
 
-# target dated t = GDP growth in t+1, predictors dated t
+# target dated t = year-on-year GDP growth in t+1, predictors dated t
 table = pd.DataFrame(predictors)
-table["target"] = gdp_growth.shift(-1)
+table["target"] = annual_growth("gdp").shift(-1)
 table = table.loc[FIRST:LAST]
 table = table[table.index <= pd.Period(LAST, freq="Q") - 1]  # target must be inside the sample
 assert table.notna().all().all(), table.columns[table.isna().any()].tolist()
@@ -77,6 +79,8 @@ for name in predictors:
         "p_value": fit.pvalues[name],
         "pinball": loss,
         "gain_vs_baseline_%": 100 * (1 - loss / baseline_loss),
+        # the target shares 3 of its 4 quarters with this predictor, so it wins by construction
+        "mechanical": name == "gdp_growth_annual",
     })
 
 results = pd.DataFrame(rows).sort_values("pinball").reset_index(drop=True)
