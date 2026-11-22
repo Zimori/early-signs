@@ -28,6 +28,8 @@ $$y_{t+h} = \frac{400}{h} \left( \ln \mathrm{GDP}_{t+h} - \ln \mathrm{GDP}_t \ri
 
 We forecast the 5%, 25%, 50%, 75% and 95% quantiles of $y_{t+h}$. The note's second horizon, twenty quarters, is left out of the out-of-sample work: with a sample starting in 1993, five-year targets overlap so much that only a few independent observations would remain. It is still replicated in-sample.
 
+The note doesn't define its target beyond an "average annual future growth rate", so the in-sample replication (step 3) is run twice. Once on quarter-on-quarter growth, which is the target above at $h = 1$ and the way INSEE reports growth (the script uses plain % change instead of $400 \ln$, which mostly changes the scale). And once on year-on-year growth, $100\,(\mathrm{GDP}_{t+1}/\mathrm{GDP}_{t-3} - 1)$, because of the variants I tried it is the closest to the note's coefficients (about −1.2 for corporate debt against "about 1 percentage point" in the note). Year-on-year is only there to compare with the note: three of its four quarterly changes are already in the predictors dated $t$, so last year's GDP growth predicts most of it by construction (flagged `mechanical` in `report/univariate_qr_h1_yoy.csv`).
+
 ### Predictors
 
 The starting list follows the note, so that results can be compared:
