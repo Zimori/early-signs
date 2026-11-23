@@ -24,7 +24,8 @@ Exit: one command rebuilds the dataset from raw downloads.
 
 ## 3. Replicate the note in-sample
 
-- [ ] Univariate quantile regressions at 5%, at 1 and 20 quarters, ranked by fit as in the note's Chart 1. (20 quarters is in-sample only, see [scope](scope.md).)
+- [x] Univariate quantile regressions at 5%, at 1 quarter, ranked by fit as in the note's Chart 1 (`src/univariate_qr.py`). Run on two targets, since the note doesn't define its own (see the [README](../README.md#target)).
+- [ ] The same at 20 quarters (in-sample only, see [scope](scope.md)).
 - [ ] LASSO-penalised quantile regression with current values and four lags, at both horizons, as in Chart 2.
 - [ ] Write down where the results match the note and where they differ.
 
