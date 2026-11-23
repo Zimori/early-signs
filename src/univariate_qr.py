@@ -75,7 +75,8 @@ for target_name, target in targets.items():
     rows = []
     for name in predictors:
         x = sm.add_constant(table[name])
-        fit = sm.QuantReg(y, x).fit(q=QUANTILE)
+        # default is 1000 steps, credit gap with the y/y target needs about 1600
+        fit = sm.QuantReg(y, x).fit(q=QUANTILE, max_iter=5000)
         loss = pinball(y, fit.fittedvalues)
         # the baseline is nested in every model, so in-sample it can't do better
         assert loss <= baseline_loss + 1e-9, name
