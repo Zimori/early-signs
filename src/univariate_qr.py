@@ -1,7 +1,9 @@
-# Step 3, first part: one 5% quantile regression per predictor, 1 quarter ahead,
-# on revised data, ranked by pinball loss against a model with no predictor.
-# Two targets, one CSV each: q-on-q GDP growth one quarter ahead (the project's
-# target) and year-on-year growth (only to compare with the note, see README).
+# Step 3, first part: one 5% quantile regression per predictor, 1 and 20 quarters
+# ahead, on revised data, ranked by pinball loss against a model with no predictor.
+# At 1 quarter, two targets, one CSV each: q-on-q GDP growth one quarter ahead (the
+# project's target) and year-on-year growth (only to compare with the note, see README).
+# At 20 quarters, one target: average annual growth over the next 5 years, the note's
+# wording. Average q-on-q growth gives the same ranking, about 4 times smaller.
 # Transforms follow the note's charts (see docs/data-map.md).
 # Run from the repo root: python src/univariate_qr.py
 
@@ -47,7 +49,8 @@ predictors = {
     "rate_3m": data["rate_3m"],
     "rate_10y": data["rate_10y"],
 }
-# left out: vstoxx starts in 1999 and is only in the note at 20 quarters
+# left out: vstoxx is in the note at 20 quarters, but starts in 1999, so its loss
+# would come from a shorter sample and couldn't be ranked with the others
 
 
 def pinball(y, fitted):
@@ -55,17 +58,18 @@ def pinball(y, fitted):
     return (error * (QUANTILE - (error < 0))).mean()
 
 
-# target dated t = GDP growth in t+1, predictors dated t
-targets = {
-    "qoq": gdp_growth.shift(-1),
-    "yoy": annual_growth("gdp").shift(-1),
-}
+# target dated t = GDP growth after t, predictors dated t
+targets = [
+    (1, "qoq", gdp_growth.shift(-1)),
+    (1, "yoy", annual_growth("gdp").shift(-1)),
+    (20, "avg_annual", 100 * ((data["gdp"].shift(-20) / data["gdp"]) ** (1 / 5) - 1)),
+]
 
-for target_name, target in targets.items():
+for h, target_name, target in targets:
     table = pd.DataFrame(predictors)
     table["target"] = target
     table = table.loc[FIRST:LAST]
-    table = table[table.index <= pd.Period(LAST, freq="Q") - 1]  # target must be inside the sample
+    table = table[table.index <= pd.Period(LAST, freq="Q") - h]  # target must be inside the sample
     assert table.notna().all().all(), table.columns[table.isna().any()].tolist()
     y = table["target"]
 
@@ -83,7 +87,8 @@ for target_name, target in targets.items():
         rows.append({
             "predictor": name,
             "coef": fit.params[name],
-            "p_value": fit.pvalues[name],
+            # 20-quarter targets overlap by 19 quarters, so the p-value is meaningless there
+            "p_value": fit.pvalues[name] if h == 1 else None,
             "pinball": loss,
             "gain_vs_baseline_%": 100 * (1 - loss / baseline_loss),
             # y/y target shares 3 of its 4 quarters with this predictor, so it wins by construction
@@ -93,7 +98,7 @@ for target_name, target in targets.items():
     results = pd.DataFrame(rows).sort_values("pinball").reset_index(drop=True)
     results.index += 1
 
-    print(f"\ntarget {target_name}, sample: {y.index[0]} to {y.index[-1]} ({len(y)} quarters), quantile {QUANTILE}, h=1")
+    print(f"\ntarget {target_name}, sample: {y.index[0]} to {y.index[-1]} ({len(y)} quarters), quantile {QUANTILE}, h={h}")
     print(f"baseline (no predictor): 5% quantile {baseline.params.iloc[0]:.2f} pp, pinball {baseline_loss:.4f}")
     print(results.round(4).to_string())
-    results.to_csv(f"report/univariate_qr_h1_{target_name}.csv", index_label="rank")
+    results.to_csv(f"report/univariate_qr_h{h}_{target_name}.csv", index_label="rank")
