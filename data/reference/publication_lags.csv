@@ -14,7 +14,7 @@ rate_3m,0,market rates known on the day
 rate_10y,0,market rates known on the day
 vix,0,market data known on the day
 commodities,1,IMF monthly index via FRED: last value Sep 2026 on 15 Nov 2026
-brent,1,IMF monthly price via FRED: last value Sep 2026 on 15 Nov 2026
+brent,0,EIA daily price via FRED: last value 11 Nov 2026 on 15 Nov 2026
 ciss,0,ECB daily: last value 12 Nov 2026 on 15 Nov 2026
 vstoxx,0,market data known on the day
 epu_france,1,monthly: Oct 2026 out on 15 Nov 2026 so a month is out within weeks but not by the end of the quarter

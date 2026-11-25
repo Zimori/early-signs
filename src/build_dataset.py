@@ -45,7 +45,7 @@ bis_oecd = {
 fred = {
     "vix": "fred_vix",
     "commodities": "fred_commodities",
-    "brent": "fred_brent_monthly",
+    "brent": "fred_brent_daily",  # daily goes back to 1987, monthly only to 1992
 }
 
 columns = {}

@@ -35,7 +35,7 @@ Two things I noticed in the charts that the text doesn't say:
 | Prix immobiliers (crois. annuelle) | House prices, annual growth | C1 h=1 | Nominal house price index | OECD, `FRA.Q.HPI.IX`; also BIS `WS_SPP/Q.FR.N.628` | 1970Q1 | No |
 | Prix immo/loyer (crois. annuelle) | Price-to-rent ratio, annual growth | C1 h=1 | Price-to-rent ratio | OECD, `FRA.Q.HPI_RPI.IX` | 1970Q1 | No |
 | Prix des matières premières | Commodity prices | C1 h=1 | IMF all-commodity index, monthly | FRED `PALLFNFINDEXM` | 1992-01 | Not revised |
-| Prix pétrole (crois. annuelle) | Oil price, annual growth | C2 h=20 (t-4) | Brent, USD, monthly | FRED `POILBREUSDM` | 1992-01 (daily Brent from 1987) | Not revised |
+| Prix pétrole (crois. annuelle) | Oil price, annual growth | C2 h=20 (t-4) | Brent, USD, daily | FRED `DCOILBRENTEU` | 1987-05 (monthly `POILBREUSDM` only from 1992) | Not revised |
 | Rendement boursier ann. | Annual stock return, France (my guess) | C1 h=1 and h=20, C2 h=20 | Share price index, France | OECD, `FRA.M.SHARE.IX._Z._Z._Z._Z.N` | 1955-01 | Not revised |
 | Rendement boursier EU ann. | Annual stock return, Europe | C1 h=20 | Share price index, euro area | OECD, `EA20.M.SHARE.IX._Z._Z._Z._Z.N` | 1986-12 | Not revised |
 | Rendement boursier US ann. | Annual stock return, US | C1 h=20 | Share price index, US | OECD, `USA.M.SHARE.IX._Z._Z._Z._Z.N` | 1957-01 | Not revised |
